@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Comeback Terminal v4.04</title>
+    <style>
+        /* CSS STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: #0d0221;
+            color: #00ffcc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* Matrix Background Effect Canvas */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        /* Main Container */
+        .terminal-card {
+            background: rgba(15, 5, 29, 0.9);
+            border: 2px solid #ff0055;
+            box-shadow: 0 0 20px #ff0055, inset 0 0 15px rgba(255, 0, 85, 0.4);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 650px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+
+        /* Header / Glitch Effect */
+        .glitch-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff0055;
+            text-shadow: 2px 2px #00ffcc;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: #00ffcc;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #00ffcc;
+            padding-bottom: 10px;
+        }
+
+        /* Incoming Message Box */
+        .incoming-msg-box {
+            background: #190a38;
+            border-left: 4px solid #ff0055;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+            border-radius: 4px;
+        }
+
+        .incoming-msg-box p {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        .incoming-msg-box h3 {
+            color: #ff0055;
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+
+        /* Action Grid Buttons */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .cyber-btn {
+            background: transparent;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            padding: 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .cyber-btn:hover {
+            background: #00ffcc;
+            color: #0d0221;
+            box-shadow: 0 0 15px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        /* Output Box */
+        .response-display {
+            background: #05010e;
+            border: 1px solid #00ffcc;
+            border-radius: 6px;
+            padding: 20px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: inset 0 0 10px #000;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Matrix Background -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Main Tech Card -->
+    <div class="terminal-card">
+        <h1 class="glitch-title">⚠️ SYSTEM ALERT ⚠️</h1>
+        <p class="subtitle">[CYBER RESPONSE PROTOCOL ACTIVATED]</p>
+
+        <!-- Incoming Message Display -->
+        <div class="incoming-msg-box">
+            <p>> Detected Incoming Message from Dost:</p>
+            <h3>"Fuck You 😂"</h3>
+        </div>
+
+        <p style="margin-bottom: 15px; font-size: 0.9rem;">Choose Your Automated Cyber Counter-Attack:</p>
+
+        <!-- Buttons -->
+        <div class="button-grid">
+            <button class="cyber-btn" onclick="generateReply(1)">🔁 Bounce Back</button>
+            <button class="cyber-btn" onclick="generateReply(2)">⚠️ Error 404</button>
+            <button class="cyber-btn" onclick="generateReply(3)">📚 Tuition Offer</button>
+            <button class="cyber-btn" onclick="generateReply(4)">💣 System Nuke</button>
+        </div>
+
+        <!-- Output Display -->
+        <div class="response-display" id="output-box">
+            [Click a button to deploy response]
+        </div>
+
+        <p class="footer-text">Powered by Cyber-Dost Engine | Hosted on GitHub</p>
+    </div>
+
+    <!-- JAVASCRIPT CODE -->
+    <script>
+        // Matrix Background Effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = '0123456789ABCDEFGIJKLMNOPQRSTUVWXYZ@#$%&*';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(13, 2, 33, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ffcc';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 33);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Response Generator Function
+        function generateReply(type) {
+            const outputBox = document.getElementById('output-box');
+            let responseText = "";
+
+            switch(type) {
+                case 1:
+                    responseText = "Fuck you too, with extra love & side dish! 🖕🔥 (Returned to Sender with 0% Refund)";
+                    break;
+                case 2:
+                    responseText = "ERROR 404: Dost's Brain Not Found! Aage nijer jonyo ekta ayna kin, tarpor erokm dialogue marbi! 😂📱";
+                    break;
+                case 3:
+                    responseText = "Gali diteo shikhli na thik bhabe? Shikhbi to amar kach theke Tuition Classes ne! 📚😜";
+                    break;
+                case 4:
+                    responseText = "Haahaa! Tor line-e erokm offer-er jonyo onno keu darie ache, tui pichone giye line-e dara! 🚀😎";
+                    break;
+            }
+
+            outputBox.style.color = "#ff0055";
+            outputBox.innerText = responseText;
+        }
+    </script>
+</body>
+</html>
